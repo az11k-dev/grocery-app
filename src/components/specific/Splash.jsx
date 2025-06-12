@@ -37,7 +37,7 @@ function Splash() {
         } else {
             console.log("Splash complete, navigate to Home/Login");
             localStorage.setItem('introShown', 'true');
-            navigate("/login");
+            navigate("/welcome");
         }
     };
 
