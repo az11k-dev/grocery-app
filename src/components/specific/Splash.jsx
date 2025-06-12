@@ -50,11 +50,11 @@ function Splash() {
     const currentItem = splashData[currentIndex];
 
     return (
-        <div className="pt-36 h-screen w-screen bg-white">
+        <div className="pt-32 h-screen w-screen bg-white">
             <div className="flex items-center justify-center">
                 <img src={currentItem.img} alt="splash" />
             </div>
-            <div className="mt-24">
+            <div className="mt-20">
                 <h1 className={`text-[${COLORS.stxt}] font-bold text-2xl text-center`}>
                     {currentItem.title}
                 </h1>
@@ -62,7 +62,7 @@ function Splash() {
                     {currentItem.text}
                 </p>
             </div>
-            <div className="flex items-center justify-between px-10 mt-20">
+            <div className="flex items-center justify-between px-10 mt-16">
                 <button onClick={handleSkip} className="text-[#C4C4C4] text-[15px] font-medium">
                     Skip
                 </button>
