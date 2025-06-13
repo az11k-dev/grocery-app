@@ -50,7 +50,7 @@ function Splash() {
     const currentItem = splashData[currentIndex];
 
     return (
-        <div className="pt-32 h-screen w-screen bg-white">
+        <div className="pt-32 h-[100svh] w-screen bg-white">
             <div className="flex items-center justify-center">
                 <img src={currentItem.img} alt="splash" />
             </div>
