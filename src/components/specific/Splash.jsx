@@ -44,7 +44,7 @@ function Splash() {
     const handleSkip = () => {
         console.log("Splash skipped");
         localStorage.setItem('introShown', 'true');
-        navigate("/login");
+        navigate("/welcome");
     };
 
     const currentItem = splashData[currentIndex];
