@@ -8,7 +8,7 @@ function Welcome() {
         <>
             <div
                 style={{backgroundImage: `url(${Women})`}}
-                className={`h-[100vh] bg-center bg-cover`}
+                className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
                     <button>
