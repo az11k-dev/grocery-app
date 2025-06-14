@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Splash from "./components/specific/Splash.jsx";
 import Login from "./components/specific/Login.jsx";
 import Welcome from "./components/specific/Welcome.jsx";
-import Test from "./components/specific/Test.jsx";
+import SignUp from "./components/specific/SignUp.jsx";
 
 function App() {
   const introSeen = localStorage.getItem("introShown") === "true";
@@ -14,7 +14,8 @@ function App() {
           <Route path="/" element={introSeen ? <Welcome /> : <Splash />} />
           <Route path="/login" element={<Login />} />
           <Route path="/welcome" element={<Welcome />} />
-          <Route path="/test" element={<Test />} />
+          <Route path="/splash" element={<Splash />} />
+          <Route path={"/signup"} element={<SignUp />} />
         </Routes>
       </Router>
     </>

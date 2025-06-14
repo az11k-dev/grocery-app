@@ -37,8 +37,8 @@ function Login() {
                             Create an account
                         </button>
                     </div>
-                    <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Already have an account ?
-                        <a className={"text-stxt ml-1 text-center font-medium"} href="/login">Login</a>
+                    <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Don’t have an account ?
+                        <a className={"text-stxt ml-1 text-center font-medium"} href="/signup">Sign up</a>
                     </p>
                 </div>
             </div>
