@@ -2,8 +2,10 @@ import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
 import googleIcon from "../../assets/icons/googleIcon.png";
 import personIcon from "../../assets/icons/personIcon.png";
+import {useNavigate} from "react-router-dom";
 
 function Welcome() {
+    const navigate = useNavigate();
     return (
         <>
             <div
@@ -27,16 +29,16 @@ function Welcome() {
                         </p>
                     </div>
                     <div className="btns flex flex-col items-center gap-y-4 py-2">
-                        <a href="https://google.com"
+                        <button onClick={() => navigate("/test")}
                            className="flex items-center justify-center gap-10 bg-fbg rounded-[5px] text-stxt text-sm font-medium p-4 w-full">
                             <img src={googleIcon} className=" w-6" alt="google icon"/>
                             Continue with Google
-                        </a>
-                        <a href="/test"
+                        </button>
+                        <button onClick={() => navigate("/test")}
                            className="flex justify-center w-full items-center gap-10 bg-primary-dark text-white p-4 text-sm font-medium px-10 rounded-[5px]">
                             <img src={personIcon} className=" w-6" alt="person icon "/>
                             Create an account
-                        </a>
+                        </button>
                     </div>
                     <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Already have an account ?
                         <a className={"text-stxt ml-1 text-center font-medium"} href="/login">Login</a>
