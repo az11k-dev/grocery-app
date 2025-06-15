@@ -1,21 +1,42 @@
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {supabase} from '../../lib/supabaseClient'
 import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
 import emailIcon from "../../assets/icons/emailIcon.png";
 import lockIcon from "../../assets/icons/lockIcon.png";
 import eyeIcon from "../../assets/icons/eyeIcon.png";
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useNotification} from "./NotificationProvider.jsx";
 
 function Login() {
     const [pass, setPass] = useState(false);
     const navigate = useNavigate();
     const [enabled, setEnabled] = useState(false)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const { notify } = useNotification();
 
     const showPassword = () => {
         if (pass === false) {
             setPass(true)
         } else {
             setPass(false);
+        }
+    }
+
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        const {error} = await supabase.auth.signInWithPassword({
+            email,
+            password
+        })
+
+        if (error) {
+            notify(`Error: ${error}`, `error`);
+        } else {
+            notify("Успешно вошли!", "success");
+            navigate("/home");
         }
     }
 
@@ -33,7 +54,7 @@ function Login() {
                         Welcome
                     </p>
                 </header>
-                <div className={`bg-sbg absolute bottom-0 px-5 py-10 rounded-t-[10px] w-full`}>
+                <form onSubmit={handleLogin} className={`bg-sbg absolute bottom-0 px-5 py-10 rounded-t-[10px] w-full`}>
                     <div className="title">
                         <h1 className={"text-2xl font-semibold text-stxt"}>Welcome back !</h1>
                         <p className={"text-ftxt text-sm font-normal my-2"}>
@@ -44,12 +65,16 @@ function Login() {
                         <div
                             className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
                             <img src={emailIcon} className="w-[23px] h-[17.52px]" alt="google icon"/>
-                            <input type={"email"} placeholder={"Email Address..."} className={"outline-none h-full"}/>
+                            <input type={"email"} placeholder={"Email Address..."} value={email}
+                                   onChange={(e) => setEmail(e.target.value)}
+                                   required className={"outline-none h-full"}/>
                         </div>
                         <div
                             className="flex items-center justify-between bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
-                            <img src={lockIcon} className="w-[17.25px] h-[23px]" alt="google icon"/>
-                            <input type={pass ? "password" : "text"} placeholder={"Password..."}
+                            <img src={lockIcon} className="w-[17.25px] h-[23px] mr-5" alt="google icon"/>
+                            <input value={password}
+                                   onChange={(e) => setPassword(e.target.value)}
+                                   required type={pass ? "password" : "text"} placeholder={"Password..."}
                                    className={"outline-none h-full"}/>
                             <img src={eyeIcon} className={"w-[26.48px] h-[16.88px]"} onClick={() => {
                                 showPassword()
@@ -82,7 +107,8 @@ function Login() {
                             Forgot password
                         </p>
                     </div>
-                    <button className={"bg-primary-dark w-full font-semibold text-sm py-5 rounded-[5px] text-sbg"}>
+                    <button type={"submit"}
+                            className={"bg-primary-dark w-full font-semibold text-sm py-5 rounded-[5px] text-sbg"}>
                         Login
                     </button>
                     <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Don’t have an account ?
@@ -90,7 +116,7 @@ function Login() {
                             navigate("/signup")
                         }}>Sign up</span>
                     </p>
-                </div>
+                </form>
             </div>
         </>
     );

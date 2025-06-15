@@ -3,8 +3,21 @@ import Women from "../../assets/images/beautiful-female.png";
 import googleIcon from "../../assets/icons/googleIcon.png";
 import personIcon from "../../assets/icons/personIcon.png";
 import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
+import {supabase} from "../../lib/supabaseClient.js";
 
 function Welcome() {
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            if (data.session) {
+                navigate("/home");
+            }
+        };
+        checkSession();
+    }, []);
+
     const navigate = useNavigate();
     return (
         <>
