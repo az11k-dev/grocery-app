@@ -1,9 +1,21 @@
 import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
-import googleIcon from "../../assets/icons/googleIcon.png";
-import personIcon from "../../assets/icons/personIcon.png";
+import emailIcon from "../../assets/icons/emailIcon.png";
+import lockIcon from "../../assets/icons/lockIcon.png";
+import eyeIcon from "../../assets/icons/eyeIcon.png";
+import phoneIcon from "../../assets/icons/phoneIcon.png";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
 
 function SignUp() {
+    const [pass, setPass] = useState(false);
+    const navigate = useNavigate();
+    const [enabled, setEnabled] = useState(false)
+
+    const showPassword = () => {
+        if (pass === false) {setPass(true)} else {setPass(false);}
+    }
+
     return (
         <>
             <div
@@ -11,7 +23,7 @@ function SignUp() {
                 className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
-                    <button>
+                    <button onClick={() => navigate("/welcome")}>
                         <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                     </button>
                     <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-white">
@@ -26,19 +38,28 @@ function SignUp() {
                         </p>
                     </div>
                     <div className="btns flex flex-col items-center gap-y-4 py-2">
-                        <button
-                            className="flex items-center justify-center gap-10 bg-fbg rounded-[5px] text-stxt text-sm font-medium p-4 w-full">
-                            <img src={googleIcon} className=" w-6" alt="google icon"/>
-                            Continue with Google
-                        </button>
-                        <button
-                            className="flex justify-center w-full items-center gap-10 bg-primary-dark text-white p-4 text-sm font-medium px-10 rounded-[5px]">
-                            <img src={personIcon} className=" w-6" alt="person icon "/>
-                            Create an account
-                        </button>
+                        <div
+                            className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
+                            <img src={emailIcon} className="w-[23px] h-[17.52px]" alt="google icon"/>
+                            <input type={"email"} placeholder={"Email Address..."} className={"outline-none h-full"} />
+                        </div>
+                        <div
+                            className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
+                            <img src={phoneIcon} className="w-[23px] h-[23px]" alt="google icon"/>
+                            <input type={"text"} placeholder={"Phone number..."} className={"outline-none h-full"} />
+                        </div>
+                        <div
+                            className="flex items-center justify-between bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
+                            <img src={lockIcon} className="w-[17.25px] h-[23px]" alt="google icon"/>
+                            <input type={pass ? "password" : "text"} placeholder={"Password..."} className={"outline-none h-full"} />
+                            <img src={eyeIcon} className={"w-[26.48px] h-[16.88px]"} onClick={() => {showPassword()}} alt="eyeIcon"/>
+                        </div>
                     </div>
-                    <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Already have an account ?
-                        <a className={"text-stxt ml-1 text-center font-medium"} href="/login">Login</a>
+                    <button className={"bg-primary-dark w-full font-semibold text-sm py-5 rounded-[5px] text-sbg mt-3"}>
+                        SignUp
+                    </button>
+                    <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Already have an account ?
+                        <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {navigate("/login")}} >Login</span>
                     </p>
                 </div>
             </div>

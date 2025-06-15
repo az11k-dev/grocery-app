@@ -12,7 +12,11 @@ function Login() {
     const [enabled, setEnabled] = useState(false)
 
     const showPassword = () => {
-        if (pass === false) {setPass(true)} else {setPass(false);}
+        if (pass === false) {
+            setPass(true)
+        } else {
+            setPass(false);
+        }
     }
 
     return (
@@ -22,7 +26,7 @@ function Login() {
                 className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
-                    <button>
+                    <button onClick={() => navigate("/signup")}>
                         <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                     </button>
                     <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-white">
@@ -38,15 +42,18 @@ function Login() {
                     </div>
                     <div className="btns flex flex-col items-center gap-y-4 py-2">
                         <div
-                           className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
+                            className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
                             <img src={emailIcon} className="w-[23px] h-[17.52px]" alt="google icon"/>
-                            <input type={"email"} placeholder={"Email Address..."} className={"outline-none h-full"} />
+                            <input type={"email"} placeholder={"Email Address..."} className={"outline-none h-full"}/>
                         </div>
                         <div
                             className="flex items-center justify-between bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
                             <img src={lockIcon} className="w-[17.25px] h-[23px]" alt="google icon"/>
-                            <input type={pass ? "password" : "text"} placeholder={"Password..."} className={"outline-none h-full"} />
-                            <img src={eyeIcon} className={"w-[26.48px] h-[16.88px]"} onClick={() => {showPassword()}} alt="eyeIcon"/>
+                            <input type={pass ? "password" : "text"} placeholder={"Password..."}
+                                   className={"outline-none h-full"}/>
+                            <img src={eyeIcon} className={"w-[26.48px] h-[16.88px]"} onClick={() => {
+                                showPassword()
+                            }} alt="eyeIcon"/>
                         </div>
                     </div>
                     <div className={"flex justify-between items-center p-1 my-3"}>
@@ -58,7 +65,8 @@ function Login() {
                                     checked={enabled}
                                     onChange={() => setEnabled(!enabled)}
                                 />
-                                <div className={`w-[29px] h-[16px] flex items-center rounded-full p-[2px] duration-300 ${enabled ? 'bg-primary-dark' : 'bg-gray-300'}`}>
+                                <div
+                                    className={`w-[29px] h-[16px] flex items-center rounded-full p-[2px] duration-300 ${enabled ? 'bg-primary-dark' : 'bg-gray-300'}`}>
                                     <div
                                         className={`bg-white w-[12px] h-[12px] rounded-full shadow-sm transform duration-300 ${enabled ? 'translate-x-[13px]' : 'translate-x-0'}`}
                                     ></div>
@@ -68,7 +76,9 @@ function Login() {
                                 Remember me
                             </p>
                         </div>
-                        <p onClick={() => {navigate("/forget")}} className={"text-link text-sm font-medium"}>
+                        <p onClick={() => {
+                            navigate("/forget")
+                        }} className={"text-link text-sm font-medium"}>
                             Forgot password
                         </p>
                     </div>
@@ -76,7 +86,9 @@ function Login() {
                         Login
                     </button>
                     <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Don’t have an account ?
-                        <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {navigate("/signup")}} >Sign up</span>
+                        <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {
+                            navigate("/signup")
+                        }}>Sign up</span>
                     </p>
                 </div>
             </div>
