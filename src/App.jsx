@@ -5,6 +5,7 @@ import Welcome from "./components/specific/Welcome.jsx";
 import SignUp from "./components/specific/SignUp.jsx";
 import Home from "./pages/Home.jsx";
 import RequireAuth from "./lib/requireAuth"
+import Test from "./Test.jsx";
 
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/welcome" element={<Welcome/>}/>
                     <Route path="/splash" element={<Splash/>}/>
                     <Route path={"/signup"} element={<SignUp/>}/>
+                    <Route path={"/test"} element={<Test/>}/>
                 </Routes>
             </Router>
         </>
