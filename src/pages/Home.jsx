@@ -11,7 +11,7 @@ function Home() {
         const fetchSliderImages = async () => {
             const { data, error } = await supabase
                 .storage
-                .from('slider-images') // <-- название вашего bucket
+                .from('images') // <-- название вашего bucket
                 .list('', { limit: 100 });
 
             if (error) {
@@ -19,34 +19,39 @@ function Home() {
                 return;
             }
 
-            const urls = data.map(file => {
-                const { data: publicUrlData } = supabase
-                    .storage
-                    .from('slider-images')
-                    .getPublicUrl(file.name);
+            const urls = await Promise.all(
+                data.map(async (file) => {
+                    const { data: publicUrlData, error } = supabase
+                        .storage
+                        .from('images')
+                        .getPublicUrl(file.name);
 
-                return publicUrlData.publicUrl;
-            });
+                    if (error) {
+                        console.error('Ошибка получения URL:', error);
+                        return null;
+                    }
 
-            setSliderImages(urls);
+                    return publicUrlData.publicUrl;
+                })
+            );
+
+            setSliderImages(urls.filter(Boolean));
+
         };
 
         fetchSliderImages();
-
-        const interval = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % sliderImages.length);
-        }, 5000);
-
-        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
+        if (sliderImages.length === 0) return;
+
         const interval = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % sliderImages.length);
-        }, 5000); // автоматическая смена каждые 5 сек
+        }, 3000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [sliderImages]);
+
 
     return (
         <div className="p-5">
