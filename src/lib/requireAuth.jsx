@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "./supabaseClient"
+import Loader from "../components/specific/Loader.jsx";
 
 export default function RequireAuth({ children }) {
     const [loading, setLoading] = useState(true)
@@ -24,7 +25,7 @@ export default function RequireAuth({ children }) {
         checkAuth()
     }, [navigate])
 
-    if (loading) return <p className="text-center">Загрузка...</p>
+    if (loading) return <Loader />
 
     return children
 }

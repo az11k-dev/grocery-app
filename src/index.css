@@ -15,3 +15,7 @@
 :root {
   font-family: "Poppins", sans-serif;
 }
+
+.loader-animation {
+  animation: spin 1s linear infinite;
+}
