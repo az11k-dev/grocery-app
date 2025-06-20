@@ -113,7 +113,7 @@ function Home() {
                 {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3"}>
                     {categories.map((item, index) => (
                         <div key={index} className={`flex flex-col items-center justify-center`}>
-                            <div className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>
+                            <div style={{background: item.backgroundColor}} className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>
                                 <img className={"w-[23.25px] h-[25.42px]"} src={item.icon} alt="vegetables"/>
                             </div>
                             <p className={"text-ftxt text-[10px] font-medium mt-1.5"}>
