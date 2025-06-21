@@ -5,15 +5,20 @@ import rightIcon from "../assets/icons/rightIcon.png";
 import heartIcon from "../assets/icons/heartIcon.png";
 import cartIcon from "../assets/icons/cartIcon.png";
 import likeIcon from "../assets/icons/likeIcon.png";
-import Peach from "/src/assets/images/peach.png"
+import minusIcon from "../assets/icons/minusIcon.png";
+import plusIcon from "../assets/icons/plusIcon.png";
 import {supabase} from '../lib/supabaseClient'
 import Loader from "../components/specific/Loader.jsx"
+import {useNotification} from "../components/specific/NotificationProvider.jsx";
+import {useCart} from "../context/CartContext.jsx";
 
 function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [sliderImages, setSliderImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const { notify } = useNotification();
+    const { addToCart, removeFromCart, cartItems } = useCart();
 
     useEffect(() => {
         const fetchSliderImages = async () => {
@@ -23,7 +28,7 @@ function Home() {
                 .list('slider', { limit: 100 });
 
             if (error) {
-                console.error('Ошибка загрузки изображений:', error);
+                notify(`Ошибка загрузки изображений: ${error}`, "error");
                 return;
             }
 
@@ -40,7 +45,7 @@ function Home() {
                         .getPublicUrl(file.name);
 
                     if (error) {
-                        console.error('Ошибка получения URL:', error);
+                        notify(`Ошибка получения URL: ${error}`, "error");
                         return null;
                     }
 
@@ -53,7 +58,7 @@ function Home() {
         };
 
         fetchSliderImages();
-    }, []);
+    }, [notify]);
 
     useEffect(() => {
         if (sliderImages.length === 0) return;
@@ -70,20 +75,20 @@ function Home() {
             const { data, error } = await supabase
                 .from('categories')
                 .select("*")
-            data ? setCategories(data) : console.log(error);
+            data ? setCategories(data) :   notify(`Ошибка получения categories: ${error}`, "error");
         }
         fetchCategories();
-    }, [])
+    }, [notify]);
 
     useEffect(() => {
         const fetchProducts = async () => {
             const { data, error } = await supabase
                 .from('products')
                 .select("*")
-            data ? setProducts(data) : console.log(error);
+            data ? setProducts(data) :   notify(`Ошибка получения products: ${error}`, "error");
         }
         fetchProducts();
-    }, [])
+    }, [notify]);
 
     return (
         <div className="p-5">
@@ -126,10 +131,10 @@ function Home() {
                 </div>
 
                 {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3"}>
-                    {categories.map((item, index) => (
-                        <div key={index} className={`flex flex-col items-center justify-center`}>
+                    {categories.map((item) => (
+                        <div key={item.id} className={`flex flex-col items-center justify-center`}>
                             <div style={{background: item.backgroundColor}} className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>
-                                <img className={"w-[23.25px] h-[25.42px]"} src={item.icon} alt="vegetables"/>
+                                <img className={"w-[23.25px] h-[25.42px]"} src={item.icon} alt={item.title} />
                             </div>
                             <p className={"text-ftxt text-[10px] font-medium mt-1.5"}>
                                 {item.title}
@@ -146,33 +151,59 @@ function Home() {
                     <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
                 </div>
                 <div className={"grid grid-cols-2 gap-4 mt-5"}>
-                    {products.map((product, index) => (
-                        <div key={index} className={"bg-fbg p-2.5"}>
-                            <div>
-                                <div className={"flex items-center justify-end"}>
-                                    <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
-                                </div>
-                                <div className={"flex flex-col items-center justify-center"}>
-                                    <img className={"w-24 h-24"} src={product.img} alt="fruit"/>
-                                    <p className={"text-primary-dark font-medium text-xs mt-2"}>
-                                        ${product.price}
-                                    </p>
-                                    <p className={"font-semibold text-sm my-1"}>
-                                        {product.title}
-                                    </p>
-                                    <p className={"text-xs font-medium text-ftxt"}>
-                                        {product.weight}
-                                    </p>
-                                </div>
+                    {products.map((product) => {
+                        const cartItem = cartItems.find(item => item.id === product.id);
+                        return (
+                        <div key={product.id} className={"bg-fbg p-2.5"}>
+                    <div>
+                        <div className={"flex items-center justify-end"}>
+                            <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
+                        </div>
+                        <div className={"flex flex-col items-center justify-center"}>
+                            <img className={"w-24 h-24"} src={product.img} alt={product.title} />
+                            <p className={"text-primary-dark font-medium text-xs mt-2"}>
+                                ${product.price}
+                            </p>
+                            <p className={"font-semibold text-sm my-1"}>
+                                {product.title}
+                            </p>
+                            <p className={"text-xs font-medium text-ftxt"}>
+                                {product.weight}
+                            </p>
+                        </div>
+                    </div>
+                    <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
+                        {cartItem ? (
+                            <div className="flex items-center justify-center gap-3">
+                                <button
+                                    onClick={() => removeFromCart(product.id)}
+                                    className="text-primary px-2 py-1 rounded"
+                                >
+                                    <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
+                                </button>
+                                <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
+                                <button
+                                    onClick={() => addToCart(product)}
+                                    className="text-primary text-sm px-2 py-1 rounded"
+                                >
+                                    <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
+                                </button>
                             </div>
-                            <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
-                                <img className={"w-[13px] h-[15px]"} src={cartIcon} alt="cart"/>
-                                <p className={"font-medium text-xs "}>
+                        ) : (
+                            <div
+                                onClick={() => addToCart(product)}
+                                className="flex items-center gap-2 cursor-pointer"
+                            >
+                                <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
+                                <p className="font-medium text-xs">
                                     Add to cart
                                 </p>
                             </div>
-                        </div>
-                    ))}
+                        )}
+                    </div>
+                </div>
+                        )
+                })}
                 </div>
             </div>
         </div>
