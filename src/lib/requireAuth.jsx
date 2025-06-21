@@ -23,7 +23,7 @@ export default function RequireAuth({ children }) {
         }
 
         checkAuth()
-    }, [navigate])
+    }, [navigate]);
 
     if (loading) return <Loader />
 

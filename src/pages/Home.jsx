@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import searchIcon from "../assets/icons/searchIcon.png";
 import filterIcon from "../assets/icons/filterIcon.png";
 import rightIcon from "../assets/icons/rightIcon.png";
+import heartIcon from "../assets/icons/heartIcon.png";
+import cartIcon from "../assets/icons/cartIcon.png";
+import likeIcon from "../assets/icons/likeIcon.png";
+import Peach from "/src/assets/images/peach.png"
 import {supabase} from '../lib/supabaseClient'
 import Loader from "../components/specific/Loader.jsx"
 
@@ -9,6 +13,7 @@ function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [sliderImages, setSliderImages] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
         const fetchSliderImages = async () => {
@@ -70,9 +75,19 @@ function Home() {
         fetchCategories();
     }, [])
 
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const { data, error } = await supabase
+                .from('products')
+                .select("*")
+            data ? setProducts(data) : console.log(error);
+        }
+        fetchProducts();
+    }, [])
+
     return (
         <div className="p-5">
-            <div className="w-full flex items-center justify-between bg-sbg p-5 rounded-[5px]">
+            <div className="w-full flex items-center justify-between bg-fbg p-5 rounded-[5px]">
                 <img className="w-5 h-5" src={searchIcon} alt="search" />
                 <input
                     className="w-[80%] outline-none h-full text-sm text-ftxt font-medium bg-transparent"
@@ -122,6 +137,43 @@ function Home() {
                         </div>
                     ))}
                 </div>) : <Loader text={"Loading categories..."} />}
+            </div>
+            <div className={"mt-8"}>
+                <div className={"flex justify-between items-center"}>
+                    <p className={"text-stxt text-lg font-semibold"}>
+                        Featured products
+                    </p>
+                    <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
+                </div>
+                <div className={"grid grid-cols-2 gap-4 mt-5"}>
+                    {products.map((product, index) => (
+                        <div key={index} className={"bg-fbg p-2.5"}>
+                            <div>
+                                <div className={"flex items-center justify-end"}>
+                                    <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
+                                </div>
+                                <div className={"flex flex-col items-center justify-center"}>
+                                    <img className={"w-24 h-24"} src={product.img} alt="fruit"/>
+                                    <p className={"text-primary-dark font-medium text-xs mt-2"}>
+                                        ${product.price}
+                                    </p>
+                                    <p className={"font-semibold text-sm my-1"}>
+                                        {product.title}
+                                    </p>
+                                    <p className={"text-xs font-medium text-ftxt"}>
+                                        {product.weight}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
+                                <img className={"w-[13px] h-[15px]"} src={cartIcon} alt="cart"/>
+                                <p className={"font-medium text-xs "}>
+                                    Add to cart
+                                </p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

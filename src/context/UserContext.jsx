@@ -1,0 +1,35 @@
+import React, { createContext, useContext, useEffect, useState } from "react";
+import {supabase} from "../lib/supabaseClient.js";
+
+// Создание контекста
+const UserContext = createContext();
+
+// Пользовательский хук
+export const useUser = () => useContext(UserContext);
+
+// Провайдер
+export const UserProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const { data, error } = await supabase.auth.getUser()
+
+            if (error || !data.user) {
+                console.error(error);
+            } else {
+                setUser(data.user)
+            }
+
+            setLoading(false)
+        }
+        checkAuth()
+    }, []);
+
+    return (
+        <UserContext.Provider value={{ user, loading }}>
+            {children}
+        </UserContext.Provider>
+    );
+};

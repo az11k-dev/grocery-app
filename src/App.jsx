@@ -11,7 +11,7 @@ function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
 
     return (
-        <>
+        <div className={"bg-sbg min-h-screen"}>
             <Router>
                 <Routes>
                     <Route path="/" element={introSeen ? <Welcome/> : <Splash/>}/>
@@ -30,7 +30,7 @@ function App() {
                     <Route path={"/test"} element={<Test/>}/>
                 </Routes>
             </Router>
-        </>
+        </div>
     );
 }
 
