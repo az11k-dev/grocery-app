@@ -12,14 +12,18 @@ import Loader from "../components/specific/Loader.jsx"
 import {useNotification} from "../components/specific/NotificationProvider.jsx";
 import {useCart} from "../context/CartContext.jsx";
 import TabBar from "../components/specific/TabBar.jsx";
+import {useUser} from "../context/UserContext.jsx";
 
 function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [sliderImages, setSliderImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [likedProducts, setLikedProducts] = useState(new Set());
     const { notify } = useNotification();
     const { addToCart, removeFromCart, cartItems } = useCart();
+    const user = useUser();
 
     useEffect(() => {
         const fetchSliderImages = async () => {
@@ -91,12 +95,61 @@ function Home() {
         fetchProducts();
     }, [notify]);
 
+    useEffect(() => {
+        if (!user?.user?.id) return;
+
+        const fetchLikes = async () => {
+            const { data, error } = await supabase
+                .from('likes')
+                .select("product_id")
+                .eq("user_id", user.user.id);
+
+            data
+                ? setLikedProducts(new Set(data.map(entry => entry.product_id)))
+                : notify(`Ошибка получения likes: ${error}`, "error");
+        };
+
+        fetchLikes();
+    }, [user?.user?.id, notify]);
+
+    const filteredProducts = products.filter(product =>
+        [product.title, product.description, product.weight, product.price]
+            .some(field => field?.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    const toggleLike = async (productId) => {
+        if (likedProducts.has(productId)) {
+            const {error} = await supabase
+            .from('likes')
+            .delete()
+                .eq("user_id", user.user.id)
+                .eq("product_id", productId)
+            if (!error) {
+                setLikedProducts(prev => {
+                    const newSet = new Set(prev);
+                    newSet.delete(productId);
+                    return newSet;
+                });
+            }
+        } else {
+            const { error } = await supabase
+                .from("likes")
+                .insert({ user_id: user.user.id, product_id: productId });
+
+            if (!error) {
+                setLikedProducts(prev => new Set(prev).add(productId));
+            }
+        }
+    }
+
     return (
         <>
         <div className="p-5 pb-20">
             <div className="w-full flex items-center justify-between bg-fbg p-5 rounded-[5px]">
                 <img className="w-5 h-5" src={searchIcon} alt="search" />
                 <input
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-[80%] outline-none h-full text-sm text-ftxt font-medium bg-transparent"
                     placeholder="Search keywords..."
                     type="text"
@@ -148,65 +201,67 @@ function Home() {
             <div className={"mt-8"}>
                 <div className={"flex justify-between items-center"}>
                     <p className={"text-stxt text-lg font-semibold"}>
-                        Featured products
+                        Products
                     </p>
                     <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
                 </div>
-                {products.length > 0 ? (<div className={"grid grid-cols-2 gap-4 mt-5"}>
-                    {products.map((product) => {
-                        const cartItem = cartItems.find(item => item.id === product.id);
-                        return (
-                            <div key={product.id} className={"bg-fbg p-2.5"}>
-                                <div>
-                                    <div className={"flex items-center justify-end"}>
-                                        <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
-                                    </div>
-                                    <div className={"flex flex-col items-center justify-center"}>
-                                        <img className={"w-24 h-24"} src={product.img} alt={product.title} />
-                                        <p className={"text-primary-dark font-medium text-xs mt-2"}>
-                                            ${product.price}
-                                        </p>
-                                        <p className={"font-semibold text-sm my-1"}>
-                                            {product.title}
-                                        </p>
-                                        <p className={"text-xs font-medium text-ftxt"}>
-                                            {product.weight}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
-                                    {cartItem ? (
-                                        <div className="flex items-center justify-center gap-3">
-                                            <button
-                                                onClick={() => removeFromCart(product.id)}
-                                                className="text-primary px-2 py-1 rounded"
-                                            >
-                                                <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
-                                            </button>
-                                            <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
-                                            <button
-                                                onClick={() => addToCart(product)}
-                                                className="text-primary text-sm px-2 py-1 rounded"
-                                            >
-                                                <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
-                                            </button>
+                {products.length > 0 ? (
+                    filteredProducts.length > 0 ? (<div className={"grid grid-cols-2 gap-4 mt-5"}>
+                        {filteredProducts.map((product) => {
+                            const cartItem = cartItems.find(item => item.id === product.id);
+                            return (
+                                <div key={product.id} className={"bg-fbg p-2.5"}>
+                                    <div>
+                                        <div className={"flex items-center justify-end"}>
+                                            <img className={"w-4 h-4"} onClick={() => toggleLike(product.id)} src={likedProducts.has(product.id) ? likeIcon : heartIcon} alt="heart"/>
                                         </div>
-                                    ) : (
-                                        <div
-                                            onClick={() => addToCart(product)}
-                                            className="flex items-center gap-2 cursor-pointer"
-                                        >
-                                            <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
-                                            <p className="font-medium text-xs">
-                                                Add to cart
+                                        <div className={"flex flex-col items-center justify-center"}>
+                                            <img className={"w-24 h-24"} src={product.img} alt={product.title} />
+                                            <p className={"text-primary-dark font-medium text-xs mt-2"}>
+                                                ${product.price}
+                                            </p>
+                                            <p className={"font-semibold text-sm my-1"}>
+                                                {product.title}
+                                            </p>
+                                            <p className={"text-xs font-medium text-ftxt"}>
+                                                {product.weight}
                                             </p>
                                         </div>
-                                    )}
+                                    </div>
+                                    <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
+                                        {cartItem ? (
+                                            <div className="flex items-center justify-center gap-3">
+                                                <button
+                                                    onClick={() => removeFromCart(product.id)}
+                                                    className="text-primary px-2 py-1 rounded"
+                                                >
+                                                    <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
+                                                </button>
+                                                <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
+                                                <button
+                                                    onClick={() => addToCart(product)}
+                                                    className="text-primary text-sm px-2 py-1 rounded"
+                                                >
+                                                    <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                onClick={() => addToCart(product)}
+                                                className="flex items-center gap-2 cursor-pointer"
+                                            >
+                                                <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
+                                                <p className="font-medium text-xs">
+                                                    Add to cart
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    })}
-                </div>) : <Loader text={"Loading products..."} />}
+                            )
+                        })}
+                    </div>) : <p className="text-center text-primary-dark mt-20">No products found.</p>
+                ) : <Loader text={"Loading products..."} />}
             </div>
         </div>
             <TabBar />

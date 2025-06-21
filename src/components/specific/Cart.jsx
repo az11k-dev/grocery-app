@@ -10,7 +10,7 @@ const Cart = () => {
 
     return (
         <div>
-            <header className="relative flex items-center py-12 px-4 bg-fbg">
+            <header className="fixed top-0 w-full flex items-center py-5 px-4 bg-fbg">
                 <button onClick={() => navigate("/home")}>
                     <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                 </button>
@@ -18,7 +18,7 @@ const Cart = () => {
                     Shopping Cart
                 </p>
             </header>
-            <div className={"mt-10 flex flex-col gap-5"}>
+            <div className={"mt-14 flex flex-col gap-5"}>
                 {cartItems.map((item) => (
                     <div key={item.id} className="bg-fbg flex justify-between items-center p-4">
                         <div className={"flex items-center justify-start gap-5"}>
@@ -54,7 +54,7 @@ const Cart = () => {
                             Subtotal
                         </p>
                         <p className={"text-xs font-medium text-ftxt"}>
-                            ${totalPrice * 0.9}
+                            ${Number((totalPrice * 0.9).toFixed(2))}
                         </p>
                     </div>
                     <div className={"flex items-center justify-between"}>
@@ -62,7 +62,7 @@ const Cart = () => {
                             Shipping costs
                         </p>
                         <p className={"text-xs font-medium text-ftxt"}>
-                            ${totalPrice * 0.1}
+                            ${Number((totalPrice * 0.1).toFixed(2))}
                         </p>
                     </div>
                 </div>
@@ -72,7 +72,7 @@ const Cart = () => {
                             Total
                         </p>
                         <p className={"text-lg font-semibold text-stxt"}>
-                            ${totalPrice}
+                            ${Number((totalPrice).toFixed(2))}
                         </p>
                     </div>
                     <button className={"flex items-center justify-center w-full py-5 mt-4 bg-primary-dark text-sm font-semibold text-fbg rounded-[5px]"}>
