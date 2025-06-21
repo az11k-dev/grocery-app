@@ -1,5 +1,6 @@
-export const HomeIcon = ({bg}) => (
+export const HomeIcon = ({bg, onClick}) => (
     <svg
+        onClick={onClick}
         width={23}
         height={22}
         viewBox="0 0 23 22"
@@ -21,8 +22,9 @@ export const HomeIcon = ({bg}) => (
     </svg>
 );
 
-export const ProfileIcon = ({bg}) => (
+export const ProfileIcon = ({bg, onClick}) => (
     <svg
+        onClick={onClick}
         width={22}
         height={22}
         viewBox="0 0 22 22"
@@ -44,8 +46,9 @@ export const ProfileIcon = ({bg}) => (
     </svg>
 );
 
-export const HeartIcon = ({bg}) => (
+export const HeartIcon = ({bg, onClick}) => (
     <svg
+        onClick={onClick}
         width={22}
         height={18}
         viewBox="0 0 22 18"
@@ -59,8 +62,9 @@ export const HeartIcon = ({bg}) => (
     </svg>
 );
 
-export const CartIcon = ({bg}) => (
+export const CartIcon = ({bg, onClick}) => (
     <svg
+        onClick={onClick}
         width={21}
         height={25}
         viewBox="0 0 21 25"

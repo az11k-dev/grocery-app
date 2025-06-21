@@ -93,7 +93,7 @@ function Home() {
 
     return (
         <>
-        <div className="p-5">
+        <div className="p-5 pb-20">
             <div className="w-full flex items-center justify-between bg-fbg p-5 rounded-[5px]">
                 <img className="w-5 h-5" src={searchIcon} alt="search" />
                 <input
