@@ -1,13 +1,12 @@
 import backIcon from "../../assets/icons/blackBackIcon.png";
 import minusIcon from "../../assets/icons/minusIcon.png";
 import plusIcon from "../../assets/icons/plusIcon.png";
-import Avacoda from "../../assets/images/avacoda.png";
 import {useNavigate} from "react-router-dom";
 import {useCart} from "../../context/CartContext.jsx";
 
 const Cart = () => {
     const navigate = useNavigate();
-    const { addToCart, removeFromCart, cartItems, totalPrice, clearCart } = useCart();
+    const { addToCart, removeFromCart, cartItems, totalPrice } = useCart();
 
     return (
         <div>
@@ -48,7 +47,7 @@ const Cart = () => {
                     </div>
                 ))}
             </div>
-            <div className={"bg-fbg p-4 absolute bottom-0 w-full pb-6"}>
+            <div className={"bg-fbg p-4 fixed bottom-0 w-full pb-6"}>
                 <div className={"border-b border-border pb-5"}>
                     <div className={"flex items-center justify-between mb-2"}>
                         <p className={"text-xs font-medium text-ftxt"}>

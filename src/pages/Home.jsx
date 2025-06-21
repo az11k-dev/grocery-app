@@ -11,6 +11,7 @@ import {supabase} from '../lib/supabaseClient'
 import Loader from "../components/specific/Loader.jsx"
 import {useNotification} from "../components/specific/NotificationProvider.jsx";
 import {useCart} from "../context/CartContext.jsx";
+import TabBar from "../components/specific/TabBar.jsx";
 
 function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -91,6 +92,7 @@ function Home() {
     }, [notify]);
 
     return (
+        <>
         <div className="p-5">
             <div className="w-full flex items-center justify-between bg-fbg p-5 rounded-[5px]">
                 <img className="w-5 h-5" src={searchIcon} alt="search" />
@@ -150,63 +152,65 @@ function Home() {
                     </p>
                     <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
                 </div>
-                <div className={"grid grid-cols-2 gap-4 mt-5"}>
+                {products.length > 0 ? (<div className={"grid grid-cols-2 gap-4 mt-5"}>
                     {products.map((product) => {
                         const cartItem = cartItems.find(item => item.id === product.id);
                         return (
-                        <div key={product.id} className={"bg-fbg p-2.5"}>
-                    <div>
-                        <div className={"flex items-center justify-end"}>
-                            <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
-                        </div>
-                        <div className={"flex flex-col items-center justify-center"}>
-                            <img className={"w-24 h-24"} src={product.img} alt={product.title} />
-                            <p className={"text-primary-dark font-medium text-xs mt-2"}>
-                                ${product.price}
-                            </p>
-                            <p className={"font-semibold text-sm my-1"}>
-                                {product.title}
-                            </p>
-                            <p className={"text-xs font-medium text-ftxt"}>
-                                {product.weight}
-                            </p>
-                        </div>
-                    </div>
-                    <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
-                        {cartItem ? (
-                            <div className="flex items-center justify-center gap-3">
-                                <button
-                                    onClick={() => removeFromCart(product.id)}
-                                    className="text-primary px-2 py-1 rounded"
-                                >
-                                    <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
-                                </button>
-                                <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
-                                <button
-                                    onClick={() => addToCart(product)}
-                                    className="text-primary text-sm px-2 py-1 rounded"
-                                >
-                                    <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
-                                </button>
+                            <div key={product.id} className={"bg-fbg p-2.5"}>
+                                <div>
+                                    <div className={"flex items-center justify-end"}>
+                                        <img className={"w-4 h-4"} src={product.like ? likeIcon : heartIcon} alt="heart"/>
+                                    </div>
+                                    <div className={"flex flex-col items-center justify-center"}>
+                                        <img className={"w-24 h-24"} src={product.img} alt={product.title} />
+                                        <p className={"text-primary-dark font-medium text-xs mt-2"}>
+                                            ${product.price}
+                                        </p>
+                                        <p className={"font-semibold text-sm my-1"}>
+                                            {product.title}
+                                        </p>
+                                        <p className={"text-xs font-medium text-ftxt"}>
+                                            {product.weight}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={"flex justify-center items-center gap-2 border-t border-border mt-2 pt-2"}>
+                                    {cartItem ? (
+                                        <div className="flex items-center justify-center gap-3">
+                                            <button
+                                                onClick={() => removeFromCart(product.id)}
+                                                className="text-primary px-2 py-1 rounded"
+                                            >
+                                                <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
+                                            </button>
+                                            <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
+                                            <button
+                                                onClick={() => addToCart(product)}
+                                                className="text-primary text-sm px-2 py-1 rounded"
+                                            >
+                                                <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div
+                                            onClick={() => addToCart(product)}
+                                            className="flex items-center gap-2 cursor-pointer"
+                                        >
+                                            <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
+                                            <p className="font-medium text-xs">
+                                                Add to cart
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        ) : (
-                            <div
-                                onClick={() => addToCart(product)}
-                                className="flex items-center gap-2 cursor-pointer"
-                            >
-                                <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
-                                <p className="font-medium text-xs">
-                                    Add to cart
-                                </p>
-                            </div>
-                        )}
-                    </div>
-                </div>
                         )
-                })}
-                </div>
+                    })}
+                </div>) : <Loader text={"Loading products..."} />}
             </div>
         </div>
+            <TabBar />
+        </>
     );
 }
 
