@@ -237,7 +237,11 @@ function Home() {
                                             navigate(`/product/${product.id}`)
                                         }}>
                                             <div className={"flex items-center justify-end"}>
-                                                <button onClick={(e) => toggleLike(product.id)}>
+                                                <button onClick={(e) => {
+                                                    toggleLike(product.id);
+                                                    e.stopPropagation();
+
+                                                }}>
                                                     <img className={"w-5.5 h-5"}
                                                          src={`${likedProducts.has(product.id) ? likeIcon : heartIcon}`}
                                                          alt="like"/>
