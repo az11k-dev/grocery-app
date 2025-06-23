@@ -3,6 +3,7 @@ import minusIcon from "../../assets/icons/minusIcon.png";
 import plusIcon from "../../assets/icons/plusIcon.png";
 import {useNavigate} from "react-router-dom";
 import {useCart} from "../../context/CartContext.jsx";
+import UButton from "../common/UButton.jsx";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -11,7 +12,10 @@ const Cart = () => {
     return (
         <div>
             <header className="fixed top-0 w-full flex items-center py-5 px-4 bg-fbg">
-                <button onClick={() => navigate("/home")}>
+                <button onClick={() => {
+                    navigate("/home");
+                    window.scrollTo({ top: 0});
+                }}>
                     <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                 </button>
                 <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-stxt">
@@ -75,9 +79,7 @@ const Cart = () => {
                             ${Number((totalPrice).toFixed(2))}
                         </p>
                     </div>
-                    <button className={"flex items-center justify-center w-full py-5 mt-4 bg-primary-dark text-sm font-semibold text-fbg rounded-[5px]"}>
-                        Checkout
-                    </button>
+                   <UButton text={"Checkout"} />
                 </div>
             </div>
         </div>

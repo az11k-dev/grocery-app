@@ -5,6 +5,7 @@ import personIcon from "../../assets/icons/personIcon.png";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {supabase} from "../../lib/supabaseClient.js";
+import UButton from "../common/UButton.jsx";
 
 function Welcome() {
 
@@ -47,11 +48,7 @@ function Welcome() {
                             <img src={googleIcon} className=" w-6" alt="google icon"/>
                             Continue with Google
                         </a>
-                        <button onClick={() => navigate("/signup")}
-                           className="flex justify-center w-full items-center gap-10 bg-primary-dark text-white p-4 text-sm font-medium px-10 rounded-[5px]">
-                            <img src={personIcon} className=" w-6" alt="person icon "/>
-                            Create an account
-                        </button>
+                        <UButton text={"Create an account"} onClick={() => navigate("/signup")} />
                     </div>
                     <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Already have an account ?
                         <span onClick={() => {navigate("/login")}} className={"text-stxt ml-1 text-center font-medium"}>Login</span>

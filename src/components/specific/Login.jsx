@@ -7,6 +7,7 @@ import emailIcon from "../../assets/icons/emailIcon.png";
 import lockIcon from "../../assets/icons/lockIcon.png";
 import eyeIcon from "../../assets/icons/eyeIcon.png";
 import {useNotification} from "./NotificationProvider.jsx";
+import UButton from "../common/UButton.jsx";
 
 function Login() {
     const [pass, setPass] = useState(false);
@@ -107,10 +108,7 @@ function Login() {
                             Forgot password
                         </p>
                     </div>
-                    <button type={"submit"}
-                            className={"bg-primary-dark w-full font-semibold text-sm py-5 rounded-[5px] text-sbg"}>
-                        Login
-                    </button>
+                    <UButton type={"submit"} text={"Login"} />
                     <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Don’t have an account ?
                         <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {
                             navigate("/signup")
