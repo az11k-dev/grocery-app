@@ -185,7 +185,7 @@ function Home() {
                     <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
                 </div>
 
-                {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3 overflow-y-auto"}>
+                {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3 overflow-x-auto scroll-smooth no-scrollbar"}>
                     {categories.map((item) => (
                         <div key={item.id} className={`flex flex-col items-center justify-center`}>
                             <div style={{background: item.backgroundColor}} className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>
@@ -233,14 +233,14 @@ function Home() {
                                             <div className="flex items-center justify-center gap-3">
                                                 <button
                                                     onClick={() => removeFromCart(product.id)}
-                                                    className="text-primary px-2 py-1 rounded"
+                                                    className="text-primary px-4 py-1 rounded"
                                                 >
                                                     <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
                                                 </button>
                                                 <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
                                                 <button
                                                     onClick={() => addToCart(product)}
-                                                    className="text-primary text-sm px-2 py-1 rounded"
+                                                    className="text-primary text-sm px-4 py-1 rounded"
                                                 >
                                                     <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
                                                 </button>

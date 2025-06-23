@@ -16,6 +16,15 @@
   font-family: "Poppins", sans-serif;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
 .loader-animation {
   animation: spin 1s linear infinite;
 }
