@@ -11,8 +11,8 @@ const Cart = () => {
 
     return (
         <div>
-            <header className="fixed top-0 w-full flex items-center py-5 px-4 bg-fbg">
-                <button onClick={() => {
+            <header className="fixed top-0 w-full flex items-center py-1 pr-4 bg-fbg">
+                <button className={"p-4"} onClick={() => {
                     navigate("/home");
                     window.scrollTo({ top: 0});
                 }}>
@@ -22,9 +22,9 @@ const Cart = () => {
                     Shopping Cart
                 </p>
             </header>
-            <div className={"mt-14 flex flex-col gap-5"}>
+            <div className={"mt-14 flex flex-col px-2"}>
                 {cartItems.map((item) => (
-                    <div key={item.id} className="bg-fbg flex justify-between items-center p-4">
+                    <div key={item.id} className="bg-fbg flex justify-between items-center p-4 mt-5 rounded-xl">
                         <div className={"flex items-center justify-start gap-5"}>
                             <div>
                                 <img className={"w-[63px] h-[63px]"} src={item.img} alt="avacoda"/>
@@ -42,11 +42,13 @@ const Cart = () => {
                             </div>
                         </div>
                         <div className={"flex flex-col items-center justify-center gap-5"}>
-                            <img onClick={() => addToCart(item)} className={"w-[13px] h-[13px]"} src={plusIcon} alt=""/>
+                            <button onClick={() => addToCart(item)} className={""}>
+                                <img className={"w-[15px] h-[15px]"} src={plusIcon} alt=""/>
+                            </button>
                             <p className={"text-sm font-medium text-ftxt"}>
                                 {item.quantity}
                             </p>
-                            <img onClick={() => removeFromCart(item.id)}  className={"w-[13px] h-[2px]"} src={minusIcon} alt=""/>
+                            <img onClick={() => removeFromCart(item.id)}  className={"w-[15px] h-[2px]"} src={minusIcon} alt=""/>
                         </div>
                     </div>
                 ))}
