@@ -185,7 +185,7 @@ function Home() {
                     <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"} />
                 </div>
 
-                {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3"}>
+                {categories.length > 0 ? (<div className={"flex justify-start items-center gap-3 mt-3 overflow-y-auto"}>
                     {categories.map((item) => (
                         <div key={item.id} className={`flex flex-col items-center justify-center`}>
                             <div style={{background: item.backgroundColor}} className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>

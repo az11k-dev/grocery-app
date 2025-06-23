@@ -79,7 +79,7 @@ const Cart = () => {
                             ${Number((totalPrice).toFixed(2))}
                         </p>
                     </div>
-                   <UButton text={"Checkout"} />
+                   <UButton mt={"20px"} text={"Checkout"} />
                 </div>
             </div>
         </div>
