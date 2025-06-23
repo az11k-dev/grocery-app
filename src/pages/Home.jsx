@@ -233,14 +233,14 @@ function Home() {
                                             <div className="flex items-center justify-center gap-3">
                                                 <button
                                                     onClick={() => removeFromCart(product.id)}
-                                                    className="text-primary px-4 py-1 rounded"
+                                                    className="text-primary px-4 py-2 rounded"
                                                 >
                                                     <img className={"w-[13px] h-[2px]"} src={minusIcon} alt="minus"/>
                                                 </button>
                                                 <span className="text-xs font-medium mx-2">{cartItem.quantity}</span>
                                                 <button
                                                     onClick={() => addToCart(product)}
-                                                    className="text-primary text-sm px-4 py-1 rounded"
+                                                    className="text-primary text-sm px-4 py-2 rounded"
                                                 >
                                                     <img className={"w-[13px] h-[13px]"} src={plusIcon} alt="plus"/>
                                                 </button>
@@ -248,7 +248,7 @@ function Home() {
                                         ) : (
                                             <div
                                                 onClick={() => addToCart(product)}
-                                                className="flex items-center gap-2 cursor-pointer"
+                                                className="flex items-center gap-2 py-2 cursor-pointer"
                                             >
                                                 <img className="w-[13px] h-[15px]" src={cartIcon} alt="cart" />
                                                 <p className="font-medium text-xs">
