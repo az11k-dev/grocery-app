@@ -72,8 +72,11 @@ export default function ProductDetails() {
                 return (
                     <div>
                         <div className={"bg-fbg px-5 pb-5"}>
-                            <div className={"flex items-start justify-start pt-9 mb-12"}>
-                                <img onClick={() => navigate("/home")} className={"w-[23px] h-[16px]"} src={backIcon} alt="back"/>
+                            <div className={"flex items-start justify-start pt-8 mb-10"}>
+                                <img onClick={() => {
+                                    navigate("/home");
+                                    window.scrollTo({ top: 0});
+                                }} className={"w-[23px] h-[16px]"} src={backIcon} alt="back"/>
                             </div>
                             <div className={"flex items-center justify-center mb-5"}>
                                 <img className={"w-[324px] h-[324px]"} src={product?.img} alt="product"/>
@@ -111,7 +114,7 @@ export default function ProductDetails() {
                                     </button>
                                 </div>
                             </div>
-                            <UButton onClick={() => {navigate("/cart")}} text={"To cart"}/>
+                            <UButton onClick={() => {navigate("/cart"); window.scrollTo({ top: 0});}} text={"To cart"}/>
                         </div>
                     </div>
                 );

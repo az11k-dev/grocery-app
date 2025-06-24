@@ -36,7 +36,8 @@ function SignUp() {
             notify(`Error: ${error.message}`, "error")
         } else {
             notify("Письмо для подтверждения отправлено на email", "success")
-            navigate("/login")
+            navigate("/login");
+            window.scrollTo({ top: 0});
         }
     }
 
@@ -48,7 +49,10 @@ function SignUp() {
                 className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
-                    <button onClick={() => navigate("/welcome")}>
+                    <button onClick={() => {
+                        navigate("/welcome");
+                        window.scrollTo({ top: 0});
+                    }}>
                         <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                     </button>
                     <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-white">
@@ -85,7 +89,8 @@ function SignUp() {
                     </form>
                     <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Already have an account ?
                         <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {
-                            navigate("/login")
+                            navigate("/login");
+                            window.scrollTo({ top: 0});
                         }}>Login</span>
                     </p>
                 </div>

@@ -1,7 +1,6 @@
 import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
 import googleIcon from "../../assets/icons/googleIcon.png";
-import personIcon from "../../assets/icons/personIcon.png";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {supabase} from "../../lib/supabaseClient.js";
@@ -14,6 +13,7 @@ function Welcome() {
             const { data } = await supabase.auth.getSession();
             if (data.session) {
                 navigate("/home");
+                window.scrollTo({ top: 0});
             }
         };
         checkSession();
@@ -27,7 +27,10 @@ function Welcome() {
                 className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
-                    <button onClick={() => navigate("/splash")}>
+                    <button onClick={() => {
+                        navigate("/splash");
+                        window.scrollTo({ top: 0});
+                    }}>
                         <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                     </button>
                     <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-white">
@@ -48,10 +51,13 @@ function Welcome() {
                             <img src={googleIcon} className=" w-6" alt="google icon"/>
                             Continue with Google
                         </a>
-                        <UButton text={"Create an account"} onClick={() => navigate("/signup")} />
+                        <UButton text={"Create an account"} onClick={() => {
+                            navigate("/signup");
+                            window.scrollTo({ top: 0});
+                        }} />
                     </div>
                     <p className={"text-sm text-ftxt text-center font-normal mt-2"}>Already have an account ?
-                        <span onClick={() => {navigate("/login")}} className={"text-stxt ml-1 text-center font-medium"}>Login</span>
+                        <span onClick={() => {navigate("/login"); window.scrollTo({ top: 0});}} className={"text-stxt ml-1 text-center font-medium"}>Login</span>
                     </p>
                 </div>
             </div>

@@ -234,7 +234,8 @@ function Home() {
                                 return (
                                     <div key={product.id} className={"bg-fbg p-2.5 rounded-sm"}>
                                         <div onClick={() => {
-                                            navigate(`/product/${product.id}`)
+                                            navigate(`/product/${product.id}`);
+                                            window.scrollTo({ top: 0});
                                         }}>
                                             <div className={"flex items-center justify-end"}>
                                                 <button onClick={(e) => {

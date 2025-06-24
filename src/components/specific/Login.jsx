@@ -38,6 +38,7 @@ function Login() {
         } else {
             notify("Успешно вошли!", "success");
             navigate("/home");
+            window.scrollTo({ top: 0});
         }
     }
 
@@ -48,7 +49,10 @@ function Login() {
                 className={`max-h-screen h-[100svh] bg-center bg-cover`}
             >
                 <header className="relative flex items-center pt-16 px-4">
-                    <button onClick={() => navigate("/signup")}>
+                    <button onClick={() => {
+                        navigate("/signup");
+                        window.scrollTo({ top: 0});
+                    }}>
                         <img src={backIcon} alt="image" className="w-[23px] h-[16px]"/>
                     </button>
                     <p className="absolute left-1/2 transform -translate-x-1/2 text-[18px] font-normal text-white">
@@ -104,6 +108,7 @@ function Login() {
                         </div>
                         <p onClick={() => {
                             navigate("/forget")
+                            window.scrollTo({ top: 0});
                         }} className={"text-link text-sm font-medium"}>
                             Forgot password
                         </p>
@@ -111,7 +116,8 @@ function Login() {
                     <UButton type={"submit"} text={"Login"} />
                     <p className={"text-sm text-ftxt text-center font-normal mt-5"}>Don’t have an account ?
                         <span className={"text-stxt ml-1 text-center font-medium"} onClick={() => {
-                            navigate("/signup")
+                            navigate("/signup");
+                            window.scrollTo({ top: 0});
                         }}>Sign up</span>
                     </p>
                 </form>

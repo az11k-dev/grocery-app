@@ -35,9 +35,9 @@ function Splash() {
         if (currentIndex < splashData.length - 1) {
             setCurrentIndex(prev => prev + 1);
         } else {
-            console.log("Splash complete, navigate to Home/Login");
             localStorage.setItem('introShown', 'true');
             navigate("/welcome");
+            window.scrollTo({ top: 0});
         }
     };
 

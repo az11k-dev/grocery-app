@@ -1,3 +1,4 @@
+// src/lib/requireAuth.jsx
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "./supabaseClient"
@@ -14,6 +15,7 @@ export default function RequireAuth({ children }) {
 
             if (error || !data.user) {
                 navigate("/login")
+                window.scrollTo({ top: 0});
             } else {
                 setUser(data.user)
             }
