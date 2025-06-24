@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {supabase} from '../../lib/supabaseClient'
 import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
@@ -17,6 +17,17 @@ function Login() {
     const [password, setPassword] = useState('')
 
     const { notify } = useNotification();
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            if (data.session) {
+                navigate("/home");
+                window.scrollTo({ top: 0});
+            }
+        };
+        checkSession();
+    }, [navigate]);
 
     const showPassword = () => {
         if (pass === false) {

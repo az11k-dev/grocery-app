@@ -9,6 +9,8 @@ import Test from "./Test.jsx";
 import Cart from "./components/specific/Cart.jsx";
 import NotFound from "./components/specific/NotFound.jsx";
 import ProductDetails from "./components/specific/ProductDetails.jsx";
+import Categories from "./components/specific/Categories.jsx";
+import SingleCategory from "./components/specific/SingleCategory.jsx";
 
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
@@ -45,6 +47,15 @@ function App() {
                     <Route path={"/product/:id"} element={
                         <RequireAuth>
                             <ProductDetails/>
+                        </RequireAuth>}/>
+                    <Route path={"/categories"} element={
+                        <RequireAuth>
+                            <Categories/>
+                        </RequireAuth>
+                    }/>
+                    <Route path={"/category/:categoryName"} element={
+                        <RequireAuth>
+                            <SingleCategory/>
                         </RequireAuth>}/>
                     <Route path={"*"} element={<NotFound />}/>
                 </Routes>

@@ -1,6 +1,6 @@
-const Loader = ({text}) => {
+const Loader = ({text, mt}) => {
     return (
-        <div className="flex items-center justify-center w-full h-full py-10 bg-transparent">
+        <div style={{marginTop: mt}} className={`flex items-center justify-center w-full h-full py-10 bg-transparent`}>
             <div className="flex flex-col items-center gap-4">
                 <div className="relative w-16 h-16">
                     <div className="absolute inset-0 rounded-full border-4 border-emerald-500 border-t-transparent loader-animation"></div>

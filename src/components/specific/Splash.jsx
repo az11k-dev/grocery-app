@@ -1,9 +1,10 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import fSplash from "../../assets/images/fsplash.png";
 import sSplash from "../../assets/images/ssplash.png";
 import tSplash from "../../assets/images/tsplash.png";
 import { COLORS } from "../../theme/colors.jsx";
 import {useNavigate} from "react-router-dom";
+import {supabase} from "../../lib/supabaseClient.js";
 
 const splashData = [
     {
@@ -30,6 +31,17 @@ function Splash() {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            if (data.session) {
+                navigate("/home");
+                window.scrollTo({ top: 0});
+            }
+        };
+        checkSession();
+    }, [navigate]);
 
     const handleNext = () => {
         if (currentIndex < splashData.length - 1) {

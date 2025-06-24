@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import clsx from "clsx";
 

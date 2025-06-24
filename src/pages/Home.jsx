@@ -202,13 +202,21 @@ function Home() {
                         <p className={"text-stxt text-lg font-semibold"}>
                             Categories
                         </p>
-                        <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"}/>
+                        <button onClick={() => {
+                            navigate("/categories");
+                            window.scrollTo({ top: 0});
+                        }} className={"p-3 pr-0"}>
+                            <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"}/>
+                        </button>
                     </div>
 
                     {categories.length > 0 ? (<div
                         className={"flex justify-start items-center gap-3 mt-3 overflow-x-auto scroll-smooth no-scrollbar"}>
                         {categories.map((item) => (
-                            <div key={item.id} className={`flex flex-col items-center justify-center`}>
+                            <div onClick={() => {
+                                navigate(`/category/${item.title}`);
+                                window.scrollTo({top: 0});
+                            }} key={item.id} className={`flex flex-col items-center justify-center`}>
                                 <div style={{background: item.backgroundColor}}
                                      className={`flex justify-center items-center rounded-full w-[52px] h-[52px] bg-[${item.backgroundColor}]`}>
                                     <img className={"w-[23.25px] h-[25.42px]"} src={item.icon} alt={item.title}/>
