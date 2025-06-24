@@ -26,13 +26,26 @@ function App() {
                             </RequireAuth>
                         }
                     />
-                    <Route path="/login" element={<Login/>}/>
-                    <Route path="/welcome" element={<Welcome/>}/>
-                    <Route path="/splash" element={<Splash/>}/>
+                    <Route path="/login" element={
+                        <Login/>
+                    }/>
+                    <Route path="/welcome" element={
+                        <Welcome/>
+                    }/>
+                    <Route path="/splash" element={
+                        <Splash/>
+                    }/>
                     <Route path={"/signup"} element={<SignUp/>}/>
                     <Route path={"/test"} element={<Test/>}/>
-                    <Route path={"/cart"} element={<Cart/>}/>
-                    <Route path={"/product/:id"} element={<ProductDetails/>}/>
+                    <Route path={"/cart"} element={
+                        <RequireAuth>
+                            <Cart/>
+                        </RequireAuth>
+                    }/>
+                    <Route path={"/product/:id"} element={
+                        <RequireAuth>
+                            <ProductDetails/>
+                        </RequireAuth>}/>
                     <Route path={"*"} element={<NotFound />}/>
                 </Routes>
             </Router>

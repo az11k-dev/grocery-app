@@ -6,7 +6,7 @@ import Women from "../../assets/images/beautiful-female.png";
 import emailIcon from "../../assets/icons/emailIcon.png";
 import lockIcon from "../../assets/icons/lockIcon.png";
 import eyeIcon from "../../assets/icons/eyeIcon.png";
-import {useNotification} from "./NotificationProvider.jsx";
+import {useNotification} from "../../context/NotificationProvider.jsx";
 import UButton from "../common/UButton.jsx";
 
 function Login() {

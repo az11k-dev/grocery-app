@@ -7,7 +7,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {supabase} from "../../lib/supabaseClient.js";
 import {useCart} from "../../context/CartContext.jsx";
-import {useNotification} from "./NotificationProvider.jsx";
+import {useNotification} from "../../context/NotificationProvider.jsx";
 import Loader from "./Loader.jsx";
 import likeIcon from "../../assets/icons/likeIcon.png";
 import {useUser} from "../../context/UserContext.jsx";
@@ -72,7 +72,7 @@ export default function ProductDetails() {
                 return (
                     <div>
                         <div className={"bg-fbg px-5 pb-5"}>
-                            <div className={"flex items-start justify-start pt-8 mb-10"}>
+                            <div className={"flex items-start justify-start pt-8 mb-8"}>
                                 <img onClick={() => {
                                     navigate("/home");
                                     window.scrollTo({ top: 0});
@@ -98,7 +98,7 @@ export default function ProductDetails() {
                             <p className={"text-xs font-normal text-ftxt mt-3"}>
                                 {product?.description}
                             </p>
-                            <div className={"flex items-center justify-between bg-fbg rounded-[5px] px-4 py-2 mb-5 mt-5"}>
+                            <div className={"flex items-center justify-between bg-fbg rounded-[5px] px-4 py-2 mb-4 mt-5"}>
                                 <p>
                                     Quantity
                                 </p>

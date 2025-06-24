@@ -9,7 +9,7 @@ import minusIcon from "../assets/icons/minusIcon.png";
 import plusIcon from "../assets/icons/plusIcon.png";
 import {supabase} from '../lib/supabaseClient'
 import Loader from "../components/specific/Loader.jsx"
-import {useNotification} from "../components/specific/NotificationProvider.jsx";
+import {useNotification} from "../context/NotificationProvider.jsx";
 import {useCart} from "../context/CartContext.jsx";
 import TabBar from "../components/specific/TabBar.jsx";
 import {useUser} from "../context/UserContext.jsx";

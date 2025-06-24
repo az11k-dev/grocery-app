@@ -6,7 +6,7 @@ import eyeIcon from "../../assets/icons/eyeIcon.png";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {supabase} from '../../lib/supabaseClient'
-import {useNotification} from "./NotificationProvider.jsx";
+import {useNotification} from "../../context/NotificationProvider.jsx";
 import UButton from "../common/UButton.jsx";
 
 function SignUp() {

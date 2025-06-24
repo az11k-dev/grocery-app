@@ -7,6 +7,7 @@ import {supabase} from "../../lib/supabaseClient.js";
 import UButton from "../common/UButton.jsx";
 
 function Welcome() {
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkSession = async () => {
@@ -17,9 +18,8 @@ function Welcome() {
             }
         };
         checkSession();
-    }, []);
+    }, [navigate]);
 
-    const navigate = useNavigate();
     return (
         <>
             <div
