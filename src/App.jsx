@@ -11,6 +11,7 @@ import NotFound from "./components/specific/NotFound.jsx";
 import ProductDetails from "./components/specific/ProductDetails.jsx";
 import Categories from "./components/specific/Categories.jsx";
 import SingleCategory from "./components/specific/SingleCategory.jsx";
+import ProductFilter from "./components/specific/ProductFilter.jsx";
 
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
@@ -56,6 +57,10 @@ function App() {
                     <Route path={"/category/:categoryName"} element={
                         <RequireAuth>
                             <SingleCategory/>
+                        </RequireAuth>}/>
+                    <Route path={"/filter"} element={
+                        <RequireAuth>
+                            <ProductFilter/>
                         </RequireAuth>}/>
                     <Route path={"*"} element={<NotFound />}/>
                 </Routes>
