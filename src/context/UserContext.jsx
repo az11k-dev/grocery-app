@@ -19,7 +19,12 @@ export const UserProvider = ({ children }) => {
             if (error || !data.user) {
                 console.error(error);
             } else {
-                setUser(data.user)
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', data.user.id)
+                    .single()
+                setUser(profile);
             }
 
             setLoading(false)

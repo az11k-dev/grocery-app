@@ -15,10 +15,9 @@ import TabBar from "../components/specific/TabBar.jsx";
 import {useUser} from "../context/UserContext.jsx";
 import {useNavigate} from "react-router-dom";
 import { useFilter } from "../context/FilterContext";
+import Slider from "../components/specific/Slider.jsx";
 
 function Home() {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [sliderImages, setSliderImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -28,56 +27,6 @@ function Home() {
     const user = useUser();
     const navigate = useNavigate();
     const { filters, removeFilter, resetFilters, isActive } = useFilter();
-
-    useEffect(() => {
-        const fetchSliderImages = async () => {
-            const {data, error} = await supabase
-                .storage
-                .from('images')
-                .list('slider', {limit: 100});
-
-            if (error) {
-                notify(`Ошибка загрузки изображений: ${error}`, "error");
-                return;
-            }
-
-            const imageFiles = data.filter(
-                (file) =>
-                    file.metadata?.size > 0
-            );
-
-            const urls = await Promise.all(
-                imageFiles.map(async (file) => {
-                    const {data: publicUrlData, error} = supabase
-                        .storage
-                        .from('images/slider')
-                        .getPublicUrl(file.name);
-
-                    if (error) {
-                        notify(`Ошибка получения URL: ${error}`, "error");
-                        return null;
-                    }
-
-                    return publicUrlData.publicUrl;
-                })
-            );
-
-            setSliderImages(urls.filter(Boolean));
-
-        };
-
-        fetchSliderImages();
-    }, [notify]);
-
-    useEffect(() => {
-        if (sliderImages.length === 0) return;
-
-        const interval = setInterval(() => {
-            setActiveIndex((prev) => (prev + 1) % sliderImages.length);
-        }, 3000);
-
-        return () => clearInterval(interval);
-    }, [sliderImages]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -195,29 +144,7 @@ function Home() {
                         <img className="w-6 h-5" src={filterIcon} alt="filter"/>
                     </button>
                 </div>
-
-                {sliderImages.length > 0 ? (<div
-                    className="mt-5 w-full h-[238px] rounded-sm bg-cover bg-center transition-all duration-500 relative overflow-hidden"
-                    style={{
-                        backgroundImage: sliderImages.length
-                            ? `url(${sliderImages[activeIndex]})`
-                            : "none"
-                    }}
-                >
-                    <div className="flex flex-col items-end justify-center h-full w-full p-5">
-                        <div className="absolute bottom-3 left-5 flex gap-1">
-                            {sliderImages.map((_, index) => (
-                                <div
-                                    key={index}
-                                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                                        index === activeIndex ? "bg-primary-dark scale-110" : "bg-sbg"
-                                    }`}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>) : <Loader text={"Loading slider..."}/>}
-
+                <Slider/>
                 <div className={"mt-5"}>
                     <div className={"flex justify-between items-center"}>
                         <p className={"text-stxt text-lg font-semibold"}>

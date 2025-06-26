@@ -12,9 +12,9 @@ import UButton from "../common/UButton.jsx";
 function SignUp() {
     const [pass, setPass] = useState(false);
     const navigate = useNavigate();
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [fullName, setFullName] = useState("");
     const { notify } = useNotification();
 
     useEffect(() => {
@@ -38,7 +38,7 @@ function SignUp() {
 
     const handleSignup = async (e) => {
         e.preventDefault()
-        const {error} = await supabase.auth.signUp({
+        const {error, data} = await supabase.auth.signUp({
             email,
             password
         })
@@ -47,6 +47,12 @@ function SignUp() {
             notify(`Error: ${error.message}`, "error")
         } else {
             notify("Письмо для подтверждения отправлено на email", "success")
+            await supabase.from('profiles').insert({
+                id: data.user.id,
+                email: email,
+                password: password,
+                fullName: fullName,
+            });
             navigate("/login");
             window.scrollTo({ top: 0});
         }
@@ -78,6 +84,30 @@ function SignUp() {
                         </p>
                     </div>
                     <form onSubmit={handleSignup} className="btns flex flex-col items-center gap-y-4 py-2">
+                        <div
+                            className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width={22}
+                                height={22}
+                                fill="none"
+                            >
+                                <g clipPath="url(#a)">
+                                    <path
+                                        fill={"#868889"}
+                                        d="M18.778 3.222A10.928 10.928 0 0 0 11 0C8.062 0 5.3 1.144 3.222 3.222A10.928 10.928 0 0 0 0 11c0 2.938 1.144 5.7 3.222 7.778A10.928 10.928 0 0 0 11 22c2.938 0 5.7-1.144 7.778-3.222A10.928 10.928 0 0 0 22 11c0-2.938-1.144-5.7-3.222-7.778ZM5.515 19.009A5.554 5.554 0 0 1 11 14.406a5.554 5.554 0 0 1 5.485 4.603A9.656 9.656 0 0 1 11 20.71a9.656 9.656 0 0 1-5.485-1.702Zm1.987-9.39A3.501 3.501 0 0 1 11 6.122a3.502 3.502 0 0 1 3.498 3.497A3.502 3.502 0 0 1 11 13.117a3.502 3.502 0 0 1-3.498-3.498Zm10.1 8.496a6.85 6.85 0 0 0-2.002-3.226 6.851 6.851 0 0 0-1.992-1.258 4.786 4.786 0 0 0 2.179-4.012A4.792 4.792 0 0 0 11 4.833a4.792 4.792 0 0 0-4.787 4.786c0 1.678.868 3.157 2.179 4.012-.725.298-1.4.721-1.992 1.258a6.853 6.853 0 0 0-2.002 3.226A9.686 9.686 0 0 1 1.29 11c0-5.355 4.356-9.71 9.711-9.71s9.71 4.355 9.71 9.71a9.687 9.687 0 0 1-3.108 7.115Z"
+                                    />
+                                </g>
+                                <defs>
+                                    <clipPath id="a">
+                                        <path fill={"#868889"} d="M0 0h22v22H0z" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                            <input type={"text"} value={fullName}
+                                   onChange={(e) => setFullName(e.target.value)}
+                                   required placeholder={"Full Name..."} className={"outline-none h-full"}/>
+                        </div>
                         <div
                             className="flex items-center justify-start gap-5 bg-fbg rounded-[5px] text-ftxt text-sm font-medium p-4 w-full">
                             <img src={emailIcon} className="w-[23px] h-[17.52px]" alt="google icon"/>

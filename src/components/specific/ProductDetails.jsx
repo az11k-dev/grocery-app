@@ -14,7 +14,7 @@ import {useUser} from "../../context/UserContext.jsx";
 
 export default function ProductDetails() {
 
-    const [products, setProducts] = useState([]);
+    const [product, setProduct] = useState(null);
     const [likedProducts, setLikedProducts] = useState(new Set());
     const user = useUser();
     const {addToCart, removeFromCart, cartItems} = useCart();
@@ -28,8 +28,9 @@ export default function ProductDetails() {
                 .from("products")
                 .select("*")
                 .eq("id", id)
+                .single()
             if (data) {
-                setProducts(data);
+                setProduct(data);
             } else {
                 notify(`Error: ${error}`, "error")
             }
@@ -38,37 +39,53 @@ export default function ProductDetails() {
     }, [id, notify]);
 
     const toggleLike = async (productId) => {
-        if (likedProducts.has(productId)) {
+        const isLiked = likedProducts.has(productId);
+
+        // Оптимистично обновляем UI
+        setLikedProducts(prev => {
+            const newSet = new Set(prev);
+            isLiked ? newSet.delete(productId) : newSet.add(productId);
+            return newSet;
+        });
+
+        if (isLiked) {
             const {error} = await supabase
                 .from('likes')
                 .delete()
                 .eq("user_id", user.user.id)
-                .eq("product_id", productId)
-            if (!error) {
+                .eq("product_id", productId);
+
+            if (error) {
+                notify("Ошибка удаления лайка", "error");
+                // Откатываем назад
+                setLikedProducts(prev => new Set(prev).add(productId));
+            }
+        } else {
+            const {error} = await supabase
+                .from("likes")
+                .insert({user_id: user.user.id, product_id: productId});
+
+            if (error) {
+                notify("Ошибка добавления лайка", "error");
+                // Откатываем назад
                 setLikedProducts(prev => {
                     const newSet = new Set(prev);
                     newSet.delete(productId);
                     return newSet;
                 });
             }
-        } else {
-            const { error } = await supabase
-                .from("likes")
-                .insert({ user_id: user.user.id, product_id: productId });
-
-            if (!error) {
-                setLikedProducts(prev => new Set(prev).add(productId));
-            }
         }
-    }
-
-    const product = products[0];
+    };
 
     return (
         <div>
-            {product ? "" : <Loader text={"Loading product..."} />}
-            {product && (() => {
-                const cartItem = cartItems.find(item => item.id === products[0].id);
+            {product && Object.keys(product).length > 0 ? (
+                ""
+            ) : (
+                <Loader text={"Loading product..."} />
+            )}
+            {product && Object.keys(product).length > 0 && (() => {
+                const cartItem = cartItems.find(item => item.id === product.id);
                 return (
                     <div>
                         <div className={"bg-fbg px-5 pb-5"}>
@@ -87,7 +104,7 @@ export default function ProductDetails() {
                                 <p className={"text-lg font-semibold text-primary-dark"}>
                                     ${product?.price}
                                 </p>
-                                <img onClick={() => toggleLike(product.id)} className={"w-5.5 h-5"} src={likedProducts.has(product.id) ? likeIcon : heartIcon} alt=""/>
+                                <img onClick={() => toggleLike(product.id)} className={"w-5.5 h-5"} src={`${likedProducts.has(product.id) ? likeIcon : heartIcon}`} alt=""/>
                             </div>
                             <p className={"text-xl font-semibold"}>
                                 {product?.title}
@@ -107,7 +124,7 @@ export default function ProductDetails() {
                                         <img className={"w-[15px] h-0.5"} src={`${minusIcon}`} alt="decrease"/>
                                     </button>
                                     <p className={"px-1"}>
-                                        {cartItem?.quantity}
+                                        {cartItem ? cartItem.quantity : 0}
                                     </p>
                                     <button onClick={() => addToCart(product)} className={"p-3"}>
                                         <img className={"w-[15px] h-[15px]"} src={`${plusIcon}`} alt="increase"/>

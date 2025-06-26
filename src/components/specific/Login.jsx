@@ -31,9 +31,10 @@ function Login() {
 
     const showPassword = () => {
         if (pass === false) {
-            setPass(true)
+            setPass(prev => !prev)
+
         } else {
-            setPass(false);
+            setPass(prev => !prev)
         }
     }
 
@@ -45,7 +46,7 @@ function Login() {
         })
 
         if (error) {
-            notify(`Error: ${error}`, `error`);
+            notify(`Error: ${error.message}`, `error`);
         } else {
             notify("Успешно вошли!", "success");
             navigate("/home");

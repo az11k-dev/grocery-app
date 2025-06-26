@@ -58,7 +58,7 @@ const ProductFilter = () => {
                 </div>
             </div>
             <div className={"px-4 absolute w-full bottom-5"}>
-                <UButton onClick={() => {
+                <UButton text={"Apply filter"} onClick={() => {
                     handleApplyFilters();
                 }} />
             </div>

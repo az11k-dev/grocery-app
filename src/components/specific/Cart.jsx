@@ -22,7 +22,7 @@ const Cart = () => {
                     Shopping Cart
                 </p>
             </header>
-            <div className={"mt-14 flex flex-col px-2"}>
+            {cartItems.length > 0 ? <div className={"mt-14 flex flex-col px-2"}>
                 {cartItems.map((item) => (
                     <div key={item.id} className="bg-fbg flex justify-between items-center p-4 mt-5 rounded-xl">
                         <div className={"flex items-center justify-start gap-5"}>
@@ -52,7 +52,9 @@ const Cart = () => {
                         </div>
                     </div>
                 ))}
-            </div>
+            </div> : <div className={"h-[70vh] flex items-center justify-center"}>
+                <p className="text-center text-primary-dark">There are no products in your cart!</p>
+            </div>}
             <div className={"bg-fbg p-4 fixed bottom-0 w-full pb-6"}>
                 <div className={"border-b border-border pb-5"}>
                     <div className={"flex items-center justify-between mb-2"}>

@@ -1,16 +1,25 @@
-import { createContext, useContext, useState } from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 
 const FilterContext = createContext(null);
+
+const DEFAULT_FILTERS = {
+    minPrice: "",
+    maxPrice: "",
+    minWeight: "",
+    maxWeight: "",
+};
 
 export const FilterProvider = ({ children }) => {
 
     // Здесь будут все значения фильтра
-    const [filters, setFilters] = useState({
-        minPrice: "",
-        maxPrice: "",
-        minWeight: "",
-        maxWeight: "",
+    const [filters, setFilters] = useState(() => {
+        const stored = localStorage.getItem("filters");
+        return stored ? JSON.parse(stored) : DEFAULT_FILTERS;
     });
+
+    useEffect(() => {
+        localStorage.setItem("filters", JSON.stringify(filters));
+    }, [filters]);
 
     // Обновить один фильтр
     const updateFilter = (key, value) => {
