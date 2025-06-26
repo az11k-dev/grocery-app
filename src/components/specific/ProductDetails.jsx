@@ -78,7 +78,7 @@ export default function ProductDetails() {
     };
 
     return (
-        <div className={"max-h-screen"}>
+        <div className={"max-h-[100svh]"}>
             {product && Object.keys(product).length > 0 ? (
                 ""
             ) : (
