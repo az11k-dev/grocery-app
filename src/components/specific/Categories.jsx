@@ -39,7 +39,7 @@ const Categories = () => {
                         navigate(`/category/${category.title}`);
                         window.scrollTo({top: 0});
                     }} className={"bg-fbg px-5 py-3"} key={category.id}>
-                        <div style={{background: category.backgroundColor}} className={"rounded-full flex items-center justify-center py-5"}>
+                        <div style={{background: category.backgroundColor}} className={"rounded-full flex items-center justify-center py-[22px]"}>
                             <img src={category.icon} className={"w-7 h-7"} alt={category.title}/>
                         </div>
                         <p className={"text-center text-ftxt font-medium text-[10px] mt-3"} >{category.title}</p>

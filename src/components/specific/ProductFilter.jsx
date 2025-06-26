@@ -14,7 +14,7 @@ const ProductFilter = () => {
     }
 
     return (
-        <div>
+        <div className={"max-h-screen"}>
             <header className="fixed top-0 w-full flex items-center justify-between py-1 pr-4 bg-fbg">
                 <button className={"p-4"} onClick={() => {
                     navigate("/home");
