@@ -99,7 +99,7 @@ export default function ProductDetails() {
                                 <img className={"w-[324px] h-[324px]"} src={product?.img} alt="product"/>
                             </div>
                         </div>
-                        <div className={"p-5"}>
+                        <div className={"p-5 pb-0"}>
                             <div className={"flex items-center justify-between"}>
                                 <p className={"text-lg font-semibold text-primary-dark"}>
                                     ${product?.price}
