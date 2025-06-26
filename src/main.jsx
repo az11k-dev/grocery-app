@@ -5,14 +5,17 @@ import App from './App.jsx'
 import {NotificationProvider} from "./context/NotificationProvider.jsx";
 import {UserProvider} from "./context/UserContext.jsx";
 import {CartProvider} from "./context/CartContext.jsx";
+import {FilterProvider} from "./context/FilterContext.jsx";
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <NotificationProvider>
             <UserProvider>
-                <CartProvider>
-                    <App  />
-                </CartProvider>
+                <FilterProvider>
+                    <CartProvider>
+                        <App  />
+                    </CartProvider>
+                </FilterProvider>
             </UserProvider>
         </NotificationProvider>
     </StrictMode>,

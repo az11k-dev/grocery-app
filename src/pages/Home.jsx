@@ -14,6 +14,7 @@ import {useCart} from "../context/CartContext.jsx";
 import TabBar from "../components/specific/TabBar.jsx";
 import {useUser} from "../context/UserContext.jsx";
 import {useNavigate} from "react-router-dom";
+import { useFilter } from "../context/FilterContext";
 
 function Home() {
     const [activeIndex, setActiveIndex] = useState(0);
@@ -26,6 +27,7 @@ function Home() {
     const {addToCart, removeFromCart, cartItems} = useCart();
     const user = useUser();
     const navigate = useNavigate();
+    const { filters, removeFilter, resetFilters, isActive } = useFilter();
 
     useEffect(() => {
         const fetchSliderImages = async () => {
@@ -115,11 +117,20 @@ function Home() {
     }, [user?.user?.id, notify]);
 
     const filteredProducts = useMemo(() => {
-        return products.filter(product =>
-            [product.title, product.description, product.weight, product.price]
-                .some(field => field?.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-    }, [products, searchTerm])
+        return products.filter(product => {
+            const titleMatch =  [product.title, product.description, product.weight, product.price]
+                .some(field => String(field)?.toLowerCase().includes(searchTerm.toLowerCase()))
+                const priceMatch =
+                    (!filters.minPrice || product.price >= +filters.minPrice) &&
+                    (!filters.maxPrice || product.price <= +filters.maxPrice);
+
+                const weightMatch =
+                    (!filters.minWeight || +product.weight >= +filters.minWeight) &&
+                    (!filters.maxWeight || +product.weight <= +filters.maxWeight);
+
+                return titleMatch && priceMatch && weightMatch;
+        }
+        );}, [products, searchTerm, filters])
 
     const toggleLike = async (productId) => {
         const isLiked = likedProducts.has(productId);
@@ -163,8 +174,10 @@ function Home() {
     return (
         <>
             <div className="p-5 pb-20">
-                <div className="w-full flex items-center justify-between bg-fbg p-5 rounded-[5px]">
-                    <img className="w-5 h-5" src={searchIcon} alt="search"/>
+                <div className="w-full flex items-center justify-between bg-fbg rounded-[5px]">
+                    <button className={"p-5"}>
+                        <img className="w-6 h-5" src={searchIcon} alt="search"/>
+                    </button>
                     <input
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -172,7 +185,15 @@ function Home() {
                         placeholder="Search keywords..."
                         type="search"
                     />
-                    <img className="w-5 h-5" src={filterIcon} alt="filter"/>
+                    {isActive && (
+                        <div className="absolute top-9 right-[55px] w-2 h-2 bg-primary-dark rounded-full" />
+                    )}
+                    <button onClick={() => {
+                        navigate("/filter");
+                        window.scrollTo({top: 0});
+                    }} className={"p-5"}>
+                        <img className="w-6 h-5" src={filterIcon} alt="filter"/>
+                    </button>
                 </div>
 
                 {sliderImages.length > 0 ? (<div
@@ -235,6 +256,36 @@ function Home() {
                         </p>
                         <img src={rightIcon} alt="rightIcon" className={"w-[10.52px] h-[18px]"}/>
                     </div>
+                    {isActive && (
+                        <div className="flex gap-2 flex-wrap mt-3">
+                            {filters.minPrice && (
+                                <span className="text-xs bg-fbg text-primary-dark px-2 py-1 rounded">
+                                    Цена от ${filters.minPrice}
+                                    <button onClick={() => removeFilter("minPrice")} className="ml-2">✕</button>
+                                </span>
+                            )}
+                            {filters.maxPrice && (
+                                <span className="text-xs bg-fbg text-primary-dark px-2 py-1 rounded">
+                                    До ${filters.maxPrice}
+                                    <button onClick={() => removeFilter("maxPrice")} className="ml-2">✕</button>
+                                </span>
+                            )}
+                            {filters.minWeight && (
+                                <span className="text-xs bg-fbg text-primary-dark px-2 py-1 rounded">
+                                    От {filters.minWeight} lbs
+                                    <button onClick={() => removeFilter("minWeight")} className="ml-2">✕</button>
+                                </span>
+                            )}  {filters.maxWeight && (
+                            <span className="text-xs bg-fbg text-primary-dark px-2 py-1 rounded">
+                                    До {filters.maxWeight} lbs
+                                <button onClick={() => removeFilter("maxWeight")} className="ml-2">✕</button>
+                                </span>
+                        )}
+                            <button onClick={resetFilters} className="text-xs text-red-500 underline">
+                                Сбросить всё
+                            </button>
+                        </div>
+                    )}
                     {products.length > 0 ? (
                         filteredProducts.length > 0 ? (<div className={"grid grid-cols-2 gap-4 mt-5"}>
                             {filteredProducts.map((product) => {
@@ -265,7 +316,7 @@ function Home() {
                                                     {product.title}
                                                 </p>
                                                 <p className={"text-xs font-medium text-ftxt"}>
-                                                    {product.weight}
+                                                    {product.weight} lbs
                                                 </p>
                                             </div>
                                         </div>

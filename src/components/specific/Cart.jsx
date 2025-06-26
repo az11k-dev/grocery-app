@@ -37,7 +37,7 @@ const Cart = () => {
                                     {item.title}
                                 </p>
                                 <p className={"text-sm font-normal text-ftxt"}>
-                                    {item.weight}
+                                    {item.weight} lbs
                                 </p>
                             </div>
                         </div>

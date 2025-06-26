@@ -138,7 +138,7 @@ const SingleCategory = () => {
                                                 {category.title}
                                             </p>
                                             <p className={"text-xs font-medium text-ftxt"}>
-                                                {category.weight}
+                                                {category.weight} lbs
                                             </p>
                                         </div>
                                     </div>
