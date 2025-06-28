@@ -80,17 +80,15 @@ const Profile = () => {
 
     ]
 
-    console.log(user)
-
     return (
         <div>
             <div className="flex flex-col items-center justify-center pt-10">
                 <img className={"rounded-full w-[114px] h-[114px]"} src={ user.loading ? "https://erxubvcjrzetozqfzkpg.supabase.co/storage/v1/object/public/images/avatars/avatar.jpg" : user?.user?.avatar} alt="avatar"/>
                 <p className={"text-center font-semibold text-sm my-1"}>
-                    {user?.user?.fullName ? "Your Full Name" : user?.user?.fullName}
+                    {user?.loading ? "Your Full Name" : user?.user?.fullName}
                 </p>
                 <p className={"text-ftxt font-normal text-xs text-center"}>
-                    {user?.user?.email ? "Your email address" : user?.user?.email}
+                    {user?.loading ? "Your email address" : user?.user?.email}
                 </p>
             </div>
             <div className={"mt-10 flex flex-col justify-center gap-6 px-7"}>
