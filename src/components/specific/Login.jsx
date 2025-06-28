@@ -30,12 +30,7 @@ function Login() {
     }, [navigate]);
 
     const showPassword = () => {
-        if (pass === false) {
             setPass(prev => !prev)
-
-        } else {
-            setPass(prev => !prev)
-        }
     }
 
     const handleLogin = async (e) => {
@@ -91,7 +86,7 @@ function Login() {
                             <img src={lockIcon} className="w-[17.25px] h-[23px] mr-5" alt="google icon"/>
                             <input value={password}
                                    onChange={(e) => setPassword(e.target.value)}
-                                   required type={pass ? "password" : "text"} placeholder={"Password..."}
+                                   required type={pass ? "text" : "password"} placeholder={"Password..."}
                                    className={"outline-none h-full"}/>
                             <img src={eyeIcon} className={"w-[26.48px] h-[16.88px]"} onClick={() => {
                                 showPassword()

@@ -1,4 +1,4 @@
-import {HomeIcon, ProfileIcon, HeartIcon, CartIcon} from "../../assets/icons/index.jsx";
+import {HomeIcon, TabProfileIcon, HeartIcon, CartIcon} from "../../assets/icons/index.jsx";
 import {useNavigate} from "react-router-dom";
 
 const TabBar = () => {
@@ -9,7 +9,7 @@ const TabBar = () => {
                 navigate("/");
                 window.scrollTo({ top: 0});
             }} />
-            <ProfileIcon onClick={() => {
+            <TabProfileIcon onClick={() => {
                 navigate("/profile");
                 window.scrollTo({ top: 0});
             }} />

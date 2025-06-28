@@ -12,6 +12,7 @@ import ProductDetails from "./components/specific/ProductDetails.jsx";
 import Categories from "./components/specific/Categories.jsx";
 import SingleCategory from "./components/specific/SingleCategory.jsx";
 import ProductFilter from "./components/specific/ProductFilter.jsx";
+import Profile from "./components/specific/Profile.jsx";
 
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
@@ -61,6 +62,10 @@ function App() {
                     <Route path={"/filter"} element={
                         <RequireAuth>
                             <ProductFilter/>
+                        </RequireAuth>}/>
+                    <Route path={"/profile"} element={
+                        <RequireAuth>
+                            <Profile/>
                         </RequireAuth>}/>
                     <Route path={"*"} element={<NotFound />}/>
                 </Routes>
