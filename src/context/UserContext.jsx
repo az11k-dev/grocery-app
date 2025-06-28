@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
                 setUser(profile);
             }
 
-            setLoading(false)
+            setLoading(false);
         }
         checkAuth()
     }, []);

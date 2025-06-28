@@ -19,7 +19,6 @@ const Profile = () => {
     const navigate = useNavigate();
     const user = useUser();
     const notify = useNotification();
-
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
         window.location.reload();
@@ -81,15 +80,17 @@ const Profile = () => {
 
     ]
 
+    console.log(user)
+
     return (
         <div>
             <div className="flex flex-col items-center justify-center pt-10">
-                <img className={"rounded-full w-[114px] h-[114px]"} src={ user?.user?.avatar ? user?.user?.avatar : "https://erxubvcjrzetozqfzkpg.supabase.co/storage/v1/object/public/images/avatars/avatar.jpg"} alt="avatar"/>
+                <img className={"rounded-full w-[114px] h-[114px]"} src={ user.loading ? "https://erxubvcjrzetozqfzkpg.supabase.co/storage/v1/object/public/images/avatars/avatar.jpg" : user?.user?.avatar} alt="avatar"/>
                 <p className={"text-center font-semibold text-sm my-1"}>
-                    {user?.user?.fullName ? user?.user?.fullName : "Your Full Name"}
+                    {user?.user?.fullName ? "Your Full Name" : user?.user?.fullName}
                 </p>
                 <p className={"text-ftxt font-normal text-xs text-center"}>
-                    {user?.user?.email ? user?.user?.email : "Your email address"}
+                    {user?.user?.email ? "Your email address" : user?.user?.email}
                 </p>
             </div>
             <div className={"mt-10 flex flex-col justify-center gap-6 px-7"}>
