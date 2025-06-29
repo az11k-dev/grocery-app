@@ -18,12 +18,23 @@ export default function RequireAuth({ children }) {
                 window.scrollTo({ top: 0});
             } else {
                 setUser(data.user)
+                const { data, error } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .maybeSingle(); // 👈 вместо .single()
+                if (error || !data) {
+                    await supabase.auth.signOut();
+                    window.scrollTo({ top: 0});
+                    navigate("/welcome");
+                }
             }
 
             setLoading(false)
         }
 
         checkAuth()
+
     }, [navigate]);
 
     if (loading) return <Loader />
