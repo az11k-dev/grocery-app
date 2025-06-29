@@ -46,14 +46,13 @@ function Home() {
                         await supabase.from('profiles').insert({
                             id: user.id,
                             email: user.email,
-                            fullName: user.user_metadata.full_name,
+                            fullName: user.user_metadata.full_name ? user.user_metadata.full_name : user.user_metadata.user_name,
                             avatar: user.user_metadata.avatar_url,
                         });
                     }
                 }
             }
         };
-
         checkSession();
     }, [navigate]);
 
