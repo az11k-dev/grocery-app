@@ -46,11 +46,13 @@ function Welcome() {
                         </p>
                     </div>
                     <div className="btns flex flex-col items-center gap-y-4 py-2">
-                        <a href="https://google.com/"
+                        <button onClick={() => {
+                            supabase.auth.signInWithOAuth({ provider: 'google' });
+                        }}
                            className="flex items-center justify-center gap-10 bg-fbg rounded-[5px] text-stxt text-sm font-medium p-4 w-full">
                             <img src={googleIcon} className=" w-6" alt="google icon"/>
                             Continue with Google
-                        </a>
+                        </button>
                         <UButton text={"Create an account"} onClick={() => {
                             navigate("/signup");
                             window.scrollTo({ top: 0});
