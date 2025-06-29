@@ -1,6 +1,7 @@
 import backIcon from "../../assets/icons/backIcon.png";
 import Women from "../../assets/images/beautiful-female.png";
 import googleIcon from "../../assets/icons/googleIcon.png";
+import githubIcon from "../../assets/icons/githubIcon.png";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import {supabase} from "../../lib/supabaseClient.js";
@@ -57,7 +58,7 @@ function Welcome() {
                             supabase.auth.signInWithOAuth({ provider: 'github' });
                         }}
                                 className="flex items-center justify-center gap-10 bg-fbg rounded-[5px] text-stxt text-sm font-medium p-4 w-full">
-                            <img src={googleIcon} className=" w-6" alt="google icon"/>
+                            <img src={githubIcon} className=" w-6" alt="github icon"/>
                             Continue with GitHub
                         </button>
                         <UButton text={"Create an account"} onClick={() => {

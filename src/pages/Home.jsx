@@ -35,7 +35,7 @@ function Home() {
 
             if (user) {
                 // если вошёл через Google
-                if (user.app_metadata?.provider === 'google') {
+                if (user.app_metadata?.provider === 'google' || user.app_metadata?.provider === 'github') {
                     const { data: existingProfile } = await supabase
                         .from('profiles')
                         .select('*')

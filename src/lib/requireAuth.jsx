@@ -14,7 +14,7 @@ export default function RequireAuth({ children }) {
             const { data, error } = await supabase.auth.getUser()
 
             if (error || !data.user) {
-                navigate("/login")
+                navigate("/")
                 window.scrollTo({ top: 0});
             } else {
                 setUser(data.user)
