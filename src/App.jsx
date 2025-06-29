@@ -1,4 +1,4 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 import Splash from "./components/specific/Splash.jsx";
 import Login from "./components/specific/Login.jsx";
 import Welcome from "./components/specific/Welcome.jsx";
@@ -13,9 +13,41 @@ import Categories from "./components/specific/Categories.jsx";
 import SingleCategory from "./components/specific/SingleCategory.jsx";
 import ProductFilter from "./components/specific/ProductFilter.jsx";
 import Profile from "./components/specific/Profile.jsx";
+import {useEffect} from "react";
+import {supabase} from "./lib/supabaseClient.js";
 
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            const user = data.session?.user;
+
+            if (user) {
+                // если вошёл через Google
+                if (user.app_metadata?.provider === 'google' || user.app_metadata?.provider === 'github') {
+                    const { data: existingProfile } = await supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', user.id)
+                        .single();
+
+                    if (!existingProfile) {
+                        await supabase.from('profiles').insert({
+                            id: user.id,
+                            email: user.email,
+                            fullName: user.user_metadata.full_name ? user.user_metadata.full_name : user.user_metadata.user_name,
+                            avatar: user.user_metadata.avatar_url,
+                        });
+                    }
+                }
+            }
+        };
+        checkSession();
+    }, [navigate]);
 
     return (
         <div className={"bg-sbg min-h-screen"}>

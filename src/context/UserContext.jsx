@@ -30,7 +30,7 @@ export const UserProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        setTimeout(checkAuth(), 1000);
+        checkAuth();
     }, []);
 
     useEffect(() => {
