@@ -19,8 +19,6 @@ import {supabase} from "./lib/supabaseClient.js";
 function App() {
     const introSeen = localStorage.getItem("introShown") === "true";
 
-    const navigate = useNavigate();
-
     useEffect(() => {
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
@@ -47,7 +45,7 @@ function App() {
             }
         };
         checkSession();
-    }, [navigate]);
+    }, []);
 
     return (
         <div className={"bg-sbg min-h-screen"}>
