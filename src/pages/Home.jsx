@@ -29,6 +29,35 @@ function Home() {
     const { filters, removeFilter, resetFilters, isActive } = useFilter();
 
     useEffect(() => {
+        const checkSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            const user = data.session?.user;
+
+            if (user) {
+                // если вошёл через Google
+                if (user.app_metadata?.provider === 'google') {
+                    const { data: existingProfile } = await supabase
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', user.id)
+                        .single();
+
+                    if (!existingProfile) {
+                        await supabase.from('profiles').insert({
+                            id: user.id,
+                            email: user.email,
+                            fullName: user.user_metadata.full_name,
+                            avatar: user.user_metadata.avatar_url,
+                        });
+                    }
+                }
+            }
+        };
+
+        checkSession();
+    }, [navigate]);
+
+    useEffect(() => {
         const fetchCategories = async () => {
             const {data, error} = await supabase
                 .from('categories')

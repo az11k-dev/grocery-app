@@ -12,32 +12,11 @@ function Welcome() {
     useEffect(() => {
         const checkSession = async () => {
             const { data } = await supabase.auth.getSession();
-            const user = data.session?.user;
-
-            if (user) {
-                // если вошёл через Google
-                if (user.app_metadata?.provider === 'google') {
-                    const { data: existingProfile } = await supabase
-                        .from('profiles')
-                        .select('*')
-                        .eq('id', user.id)
-                        .single();
-
-                    if (!existingProfile) {
-                        await supabase.from('profiles').insert({
-                            id: user.id,
-                            email: user.email,
-                            fullName: user.user_metadata.full_name,
-                            avatar: user.user_metadata.avatar_url,
-                        });
-                    }
-                }
-
+            if (data.session) {
                 navigate("/home");
-                window.scrollTo({ top: 0 });
+                window.scrollTo({ top: 0});
             }
         };
-
         checkSession();
     }, [navigate]);
 
