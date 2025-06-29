@@ -17,13 +17,14 @@ export default function RequireAuth({ children }) {
                 navigate("/")
                 window.scrollTo({ top: 0});
             } else {
-                setUser(data.user)
-                const { data, error } = await supabase
+                const currentUser = data.user;
+                setUser(currentUser);
+                const { data: profile, error: profileError } = await supabase
                     .from("profiles")
                     .select("*")
                     .eq("id", user.id)
                     .maybeSingle(); // 👈 вместо .single()
-                if (error || !data) {
+                if (profileError || !profile) {
                     await supabase.auth.signOut();
                     window.scrollTo({ top: 0});
                     navigate("/welcome");
