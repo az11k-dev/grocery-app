@@ -22,7 +22,7 @@ export default function RequireAuth({ children }) {
                 const { data: profile, error: profileError } = await supabase
                     .from("profiles")
                     .select("*")
-                    .eq("id", user.id)
+                    .eq("id", currentUser.id)
                     .maybeSingle(); // 👈 вместо .single()
                 if (profileError || !profile) {
                     await supabase.auth.signOut();
